@@ -24,16 +24,16 @@ public class StringCalculator {
 
     public int sum(String[] data) {
         int sum = 0;
-        for (String c : data) {
-            if(validate(c)) {
-                sum += Integer.parseInt(c);
+        for (String el : data) {
+            if(validate(el)) {
+                sum += Integer.parseInt(el);
             }
         }
         return sum;
     }
 
-    public boolean validate(String c) {
-        if(Integer.parseInt(c) < 0)
+    public boolean validate(String data) {
+        if(Integer.parseInt(data) < 0)
             throw new RuntimeException("Invalid number");
         return true;
     }
