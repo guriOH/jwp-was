@@ -53,19 +53,17 @@ class StringCalculatorTest {
 
     @Test
     void validateWhenIsValidNumber() {
-        assertEquals(true, stringCalculator.validate("1"));
+        assertDoesNotThrow( () -> stringCalculator.checkValues(new String[]{"1"}));
     }
 
     @Test
     void validateWhenIsWrongNumber() {
         Exception exception = assertThrows(
                 RuntimeException.class,
-                () -> {
-                    stringCalculator.validate("-1");
-                }
+                () -> stringCalculator.checkValues(new String[]{"-1"})
         );
 
-        assertTrue(exception.getMessage().equals("Invalid number"));
+        assertEquals("Invalid number", exception.getMessage());
     }
 
 }

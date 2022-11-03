@@ -1,40 +1,58 @@
 package chapter2;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class StringCalculator {
 
     public StringCalculator() {
     }
 
     public int calc(String data){
-        if(data == null || data.isEmpty()) return 0;
-        return sum(split(data));
+        if(checkIsEmpty(data)) return 0;
+
+        return sum(checkValues(split(data)));
     }
 
-    public String[] split(String data) {
+    protected boolean checkIsEmpty(String data) {
+        return data == null || data.isEmpty();
+    }
+
+    protected String[] split(String data) {
         if(data.contains(":") || data.contains(",")) {
             return data.split(",|:");
-        }else
-            return customSplit(data);
+        }
+
+        return customSplit(data);
     }
 
-    public String[] customSplit(String data) {
-        String[] temp = data.split("\n");
-        return temp[1].split(String.valueOf(temp[0].charAt(temp[0].length()-1)));
+    protected String[] customSplit(String data) {
+
+        Pattern pattern = Pattern.compile("//(.)\n(.*)");
+        Matcher matcher = pattern.matcher(data);
+
+        String[] arr = null;
+        if(matcher.find()) {
+            String d = matcher.group(1);
+            arr = matcher.group(2).split(d);
+        }
+
+        return arr;
     }
 
-    public int sum(String[] data) {
+    protected int sum(String[] data) {
         int sum = 0;
         for (String el : data) {
-            if(validate(el)) {
-                sum += Integer.parseInt(el);
-            }
+            sum += Integer.parseInt(el);
         }
         return sum;
     }
 
-    public boolean validate(String data) {
-        if(Integer.parseInt(data) < 0)
-            throw new RuntimeException("Invalid number");
-        return true;
+    protected String[] checkValues(String[] data) {
+        for (String el : data) {
+            if(Integer.parseInt(el) < 0) throw new RuntimeException("Invalid number");
+        }
+
+        return data;
     }
 }
